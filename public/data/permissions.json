@@ -1,0 +1,26 @@
+{
+    "data": [ 
+      {"name": "ViewOwnUser"}, 
+      {"name": "ViewAnyUser"},
+      {"name": "ViewTenantUser"},
+      {"name": "CreateAnyUser"},
+      {"name": "CreateTenantUser"},
+      {"name": "UpdateOwnUser"},
+      {"name": "UpdateTenantUser"},
+      {"name":  "UpdateAnyUser"},
+      {"name":   "DeleteTenantUser"},
+      {"name": "DeleteAnyUser"},
+      {"name": "ViewTenant"},
+      {"name":  "CreateTenant"},
+      {"name": "UpdateTenant"},
+      {"name": "DeleteTenant"},
+      {"name":  "ViewRole"},
+      {"name": "CreateRole"},
+      {"name":  "UpdateRole"},
+      {"name":  "DeleteRole"},
+      {"name": "ViewAudit"},
+      {"name":  "CreateAudit"},
+      {"name":  "UpdateAudit"},
+      {"name":  "DeleteAudit"}
+    ]
+}

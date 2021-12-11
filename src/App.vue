@@ -1,5 +1,6 @@
 <template>
 	<div :class="containerClass" @click="onWrapperClick">
+        <div v-if="isAuthenticated"> 
         <AppTopBar @menu-toggle="onMenuToggle" />
         <div class="layout-sidebar" @click="onSidebarClick">
             <AppMenu :model="menu" @menuitem-click="onMenuItemClick" />
@@ -16,6 +17,39 @@
         <transition name="layout-mask">
             <div class="layout-mask p-component-overlay" v-if="mobileMenuActive"></div>
         </transition>
+        </div>
+        <div v-else>
+            <div class="layout-main-container">
+            <div class="layout-main">
+                <div class="grid">
+                    <div class="col-12 md:col-6">
+                        <div class="card p-fluid">
+                            <h5>Inicio de session</h5>
+                            <div class="field grid">
+                                <label for="name3" class="col-12 mb-2 md:col-2 md:mb-0">Usuario</label>
+                                <div class="col-12 md:col-10">
+                                    <InputText id="name3" type="text" v-model="user.name"/>
+                                </div>
+                            </div>
+                            <div class="field grid">
+                                <label for="email3" class="col-12 mb-2 md:col-2 md:mb-0">Contraseña</label>
+                                <div class="col-12 md:col-10">
+                                    <InputText id="email3" type="password" v-model="user.pass"/>
+                                </div>
+                            </div>
+                            <div class="field grid">                               
+                                <div class="col-12 md:col-12">
+                                    <Button label="Ingresar" @click="login(user.name,user.pass)"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+               
+        </div>
 	</div>
 </template>
 
@@ -24,10 +58,13 @@ import AppTopBar from './AppTopbar.vue';
 import AppMenu from './AppMenu.vue';
 import AppConfig from './AppConfig.vue';
 import AppFooter from './AppFooter.vue';
+import LoginService from './service/LoginService';
 
 export default {
     data() {
         return {
+            isAuthenticated :false,
+            user:{},
             layoutMode: 'static',
             layoutColorMode: 'light',
             staticMenuInactive: false,
@@ -43,6 +80,9 @@ export default {
 				{
 					label: 'UI Kit', icon: 'pi pi-fw pi-sitemap',
 					items: [
+                        {label: 'Tenants', icon: 'pi pi-fw pi-id-card', to: '/tenants'},
+                        {label: 'Usuarios', icon: 'pi pi-fw pi-id-card', to: '/users'},
+                        {label: 'Roles', icon: 'pi pi-fw pi-id-card', to: '/roles'},
 						{label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/formlayout'},
 						{label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/input'},
                         {label: "Float Label", icon: "pi pi-fw pi-bookmark", to: "/floatlabel"},
@@ -123,6 +163,13 @@ export default {
             ]
         }
     },
+    loginServices : null,
+    created() {
+		this.loginServices = new LoginService();
+	},
+	mounted() {
+		
+	},
     watch: {
         $route() {
             this.menuActive = false;
@@ -199,6 +246,16 @@ export default {
             }
 
             return true;
+        },
+        login(){           
+           this.loginServices.getAuthLogin(this.user.name,this.user.pass).then(res=>{
+                console.log(res.code);
+                this.loginServices.getAuthToken(res.code,this.user.name).then(res=>{
+                    localStorage.token = res.accessToken;
+                    this.isAuthenticated = true;
+                }).catch(error => console.error(error));
+           });                   
+            
         }
     },
     computed: {

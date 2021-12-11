@@ -105,6 +105,21 @@ const routes = [
         component: () => import('./pages/CrudDemo.vue'),
     },
     {
+        path: '/tenants',
+        name: 'tenants',
+        component: () => import('./pages/CrudTenants.vue'),
+    },
+    {
+        path: '/users',
+        name: 'users',
+        component: () => import('./pages/CrudUsers.vue'),
+    },
+    {
+        path: '/roles',
+        name: 'roles',
+        component: () => import('./pages/CrudRoles.vue'),
+    },
+    {
         path: '/timeline',
         name: 'timeline',
         component: () => import('./pages/TimelineDemo.vue'),
